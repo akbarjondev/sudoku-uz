@@ -1,0 +1,18 @@
+{
+  "name": "sudoku-uz",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Sudoku o'zbek tilida — mobile-first PWA",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "generate-icons": "node scripts/generate-icons.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5",
+    "vite": "^6.3.5",
+    "vite-plugin-pwa": "^0.21.1"
+  }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e14" />
+  <meta name="description" content="O'zbek tilida Sudoku — oson, o'rta, qiyin darajalar. Telefonda o'rnatib offline o'ynang." />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Sudoku" />
+  <meta property="og:title" content="Sudoku — O'zbekcha" />
+  <meta property="og:description" content="O'zbek tilida Sudoku. Oson, o'rta, qiyin. Offline PWA." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="apple-touch-icon" href="./icons/apple-180.png" />
+  <title>Sudoku — O'zbekcha</title>
+</head>
+<body>
+  <main class="wrap">
+    <header class="topbar">
+      <h1>SUDO<span>KU</span></h1>
+      <div class="top-actions">
+        <div class="diff-row" role="tablist" aria-label="Qiyinlik darajasi">
+          <button class="diff active" data-diff="easy">Oson</button>
+          <button class="diff" data-diff="medium">O'rta</button>
+          <button class="diff" data-diff="hard">Qiyin</button>
+        </div>
+        <button id="btn-install" class="install hidden">📲 O'rnatish</button>
+      </div>
+    </header>
+
+    <div class="status">
+      <span id="mistakes">❌ Xato 0/3</span>
+      <span id="hints-left">💡 Ishora 3</span>
+      <span id="timer">⏱ 00:00</span>
+      <span id="best">Rekord: —</span>
+    </div>
+
+    <div class="board-holder">
+      <div id="board" class="board" role="grid" aria-label="Sudoku taxtasi"></div>
+      <div id="overlay" class="overlay hidden">
+        <h2 id="overlay-title">Pauza</h2>
+        <p id="overlay-sub"></p>
+        <button id="overlay-btn">Davom etish</button>
+      </div>
+    </div>
+
+    <div class="sticky-bar">
+      <div class="toolbar">
+        <button id="btn-new">↺ Yangi</button>
+        <button id="btn-erase">⌫ O'chirish</button>
+        <button id="btn-notes" aria-pressed="false">✏ Qayd: o'chiq</button>
+        <button id="btn-hint">💡 Ishora</button>
+        <button id="btn-pause">⏸ Pauza</button>
+      </div>
+      <div id="numpad" class="numpad" aria-label="Raqamlar paneli"></div>
+      <footer class="hint">Katakni bosing + 1–9 kiriting · N qayd · H ishora · Backspace o'chirish</footer>
+    </div>
+
+    <div id="update-toast" class="update-toast hidden">
+      <span>Yangi versiya chiqdi</span>
+      <button id="btn-update">Yangilash</button>
+    </div>
+
+    <div id="ios-tip" class="ios-tip hidden">
+      <span>iPhone: Share → <b>Home Screen ga qo'shish</b> ni bosing</span>
+      <button id="ios-close" aria-label="Yopish">✕</button>
+    </div>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
