@@ -12,7 +12,7 @@ body {
 }
 .wrap {
   width: 100%; max-width: 100%;
-  padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+  padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
   display: flex; flex-direction: column; gap: 10px;
 }
 .topbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
@@ -79,8 +79,8 @@ body {
 .toolbar::-webkit-scrollbar { display: none; }
 .toolbar button { flex: 0 0 auto; font-size: 13px; white-space: nowrap; }
 .toolbar button[aria-pressed="true"] { border-color: #d29922; color: #d29922; }
-.numpad { display: grid; grid-template-columns: repeat(9, 1fr); gap: 6px; }
-.numpad button { font-size: 20px; padding: 0; min-height: 52px; min-width: 0; }
+.numpad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.numpad button { font-size: 24px; font-weight: 700; padding: 0; min-height: 60px; min-width: 0; }
 .hint { font-size: 11px; opacity: 0.5; text-align: center; margin: 0; }
 
 /* Overlay — mobilda bottom-sheet */
@@ -101,10 +101,10 @@ button:focus-visible, .cell:focus-visible {
 
 /* Keng ekranlar — desktop responsive saqlanadi */
 @media (min-width: 480px) {
-  .wrap { padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); }
+  .wrap { padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)); }
   .topbar h1 { font-size: 22px; }
-  .numpad { gap: 8px; }
-  .numpad button { min-height: 56px; font-size: 22px; }
+  .numpad { gap: 10px; }
+  .numpad button { min-height: 64px; font-size: 26px; }
 }
 @media (min-width: 768px) {
   .wrap { max-width: 560px; }
