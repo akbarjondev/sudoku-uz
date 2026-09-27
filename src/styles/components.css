@@ -1,0 +1,170 @@
+/* Reusable button system — single source of truth.
+   Usage: <button class="btn btn--ghost btn--md">, variants below. */
+.btn {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  font: inherit;
+  min-height: var(--btn-min-h);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.btn--sm { padding: var(--space-2) 10px; font-size: var(--font-md); }
+.btn--md { font-size: var(--font-md); }
+.btn--lg { min-height: var(--btn-min-h-lg); padding: var(--space-3) var(--space-6); }
+
+.btn--primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-weight: 700;
+}
+
+.btn--danger { border-color: var(--color-danger); color: var(--color-danger); }
+
+.btn--ghost { background: var(--color-surface); }
+
+.btn[aria-pressed="true"] { border-color: var(--color-warning); color: var(--color-warning); }
+
+.btn.is-active { border-color: var(--color-accent); color: var(--color-accent); }
+
+/* Legacy class aliases — keep working with old markup/JS */
+.diff, .toolbar button, .numpad button, .overlay button {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  font: inherit;
+  min-height: var(--btn-min-h);
+}
+.diff { padding: var(--space-2) 10px; font-size: var(--font-md); }
+.diff.active { border-color: var(--color-accent); color: var(--color-accent); }
+
+.icon-btn {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  min-height: var(--btn-min-h);
+  min-width: var(--btn-min-h);
+  padding: var(--space-2);
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Lucide icons — uniform size, currentColor adapts to theme */
+.icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  flex: 0 0 auto;
+}
+.btn--icon {
+  width: var(--btn-min-h);
+  height: var(--btn-min-h);
+  min-height: var(--btn-min-h);
+  min-width: var(--btn-min-h);
+  padding: 0;
+}
+.btn--icon .icon { width: var(--icon-size-md); height: var(--icon-size-md); }
+
+/* Status chips — single row, equal width, icon + value only */
+.stat {
+  flex: 1 1 0;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 7px 4px;
+  font-size: var(--font-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.stat .icon { width: var(--icon-size-sm); height: var(--icon-size-sm); }
+.stat b { font-weight: 700; overflow: hidden; text-overflow: ellipsis; }
+.stat--danger { color: var(--color-danger); }
+.stat--danger b { color: var(--color-text); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.install {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-weight: 700;
+  font-size: var(--font-md);
+  white-space: nowrap;
+}
+
+/* PWA helpers (kept from legacy) */
+.update-toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  padding: 10px var(--space-3);
+  font-size: var(--font-md);
+  z-index: 50;
+}
+.update-toast button {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 40px;
+}
+.ios-tip {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 10px var(--space-3);
+  font-size: var(--font-sm);
+}
+.ios-tip button {
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  font-size: 16px;
+  cursor: pointer;
+}

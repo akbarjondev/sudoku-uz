@@ -1,18 +1,29 @@
 import "./style.css";
 import "./pwa.js";
 import { createGame, load, save, place, erase, hint, fmtTime, getBest, MAX_MISTAKES } from "./game.js";
-import { peersOf } from "./sudoku.js";
+import { buildBoard, buildNumpad, paintCells } from "./ui/board.js";
+import { applyButtonStyles } from "./ui/components.js";
+import { loadSettings, saveSettings, applyTheme, watchSystemTheme } from "./settings.js";
+import { buildSettingsModal, syncSettingsModal, showSettingsModal } from "./ui/settings-modal.js";
 
 const boardEl = document.getElementById("board");
 const numpadEl = document.getElementById("numpad");
 const mistakesEl = document.getElementById("mistakes");
+const mistakesVal = document.getElementById("mistakes-val");
 const hintsEl = document.getElementById("hints-left");
+const hintsVal = document.getElementById("hints-val");
 const timerEl = document.getElementById("timer");
+const timerVal = document.getElementById("timer-val");
 const bestEl = document.getElementById("best");
+const bestVal = document.getElementById("best-val");
 const overlay = document.getElementById("overlay");
 const overlayTitle = document.getElementById("overlay-title");
 const overlaySub = document.getElementById("overlay-sub");
 const overlayBtn = document.getElementById("overlay-btn");
+
+let settings = loadSettings();
+applyTheme(settings);
+watchSystemTheme(() => settings);
 
 let game = load() || createGame("easy");
 if (game.status !== "playing") {
@@ -28,6 +39,7 @@ function diffName(d) {
 }
 
 function buzz(pattern) {
+  if (!settings.haptics) return;
   try {
     if (navigator.vibrate) navigator.vibrate(pattern);
   } catch { /* ignore */ }
@@ -51,89 +63,33 @@ function hideOverlay() {
   overlay.classList.add("hidden");
 }
 
-function buildBoard() {
-  boardEl.innerHTML = "";
-  cells = [];
-  for (let i = 0; i < 81; i++) {
-    const b = document.createElement("button");
-    b.className = "cell";
-    b.setAttribute("role", "gridcell");
-    b.dataset.idx = i;
-    b.addEventListener("click", () => {
-      game.selected = i;
-      render();
-    });
-    boardEl.appendChild(b);
-    cells.push(b);
-  }
-}
-
-function buildNumpad() {
-  numpadEl.innerHTML = "";
-  for (let v = 1; v <= 9; v++) {
-    const b = document.createElement("button");
-    b.textContent = v;
-    b.addEventListener("click", () => doPlace(v));
-    numpadEl.appendChild(b);
-  }
-}
-
-function relatedSet(idx) {
-  if (idx < 0) return new Set();
-  return new Set(peersOf(idx));
-}
-
 function render(flashIdx = -1) {
-  const sel = game.selected;
-  const rel = relatedSet(sel);
-  const selVal = sel >= 0 ? game.current[sel] : 0;
+  paintCells(cells, game, settings, flashIdx);
 
-  for (let i = 0; i < 81; i++) {
-    const el = cells[i];
-    const val = game.current[i];
-    el.classList.toggle("given", game.locked[i]);
-    el.classList.toggle("selected", i === sel);
-    el.classList.toggle("related", rel.has(i));
-    el.classList.toggle("same", val !== 0 && selVal !== 0 && val === selVal && i !== sel);
-    el.classList.toggle("error", val !== 0 && val !== game.solution[i] && !game.locked[i]);
-
-    if (val !== 0) {
-      el.textContent = val;
-    } else if (game.notes[i].size > 0) {
-      const n = document.createElement("span");
-      n.className = "notes";
-      let html = "";
-      for (let v = 1; v <= 9; v++) html += `<span>${game.notes[i].has(v) ? v : ""}</span>`;
-      n.innerHTML = html;
-      el.innerHTML = "";
-      el.appendChild(n);
-    } else {
-      el.textContent = "";
-    }
-    if (i === flashIdx) {
-      el.classList.remove("hint-flash");
-      void el.offsetWidth;
-      el.classList.add("hint-flash");
-    }
-  }
-
-  mistakesEl.textContent = `❌ Xato ${game.mistakes}/${MAX_MISTAKES}`;
-  hintsEl.textContent = `💡 Ishora: ${game.hints}`;
-  timerEl.textContent = `⏱ ${fmtTime(game.seconds)}`;
+  if (mistakesVal) mistakesVal.textContent = `${game.mistakes}/${MAX_MISTAKES}`;
+  if (hintsVal) hintsVal.textContent = `${game.hints}`;
+  if (timerVal) timerVal.textContent = fmtTime(game.seconds);
   const best = getBest()[game.difficulty];
-  bestEl.textContent = `Rekord: ${best != null ? fmtTime(best) : "—"}`;
+  if (bestVal) bestVal.textContent = best != null ? fmtTime(best) : "—";
+
+  // Settings visibility toggles
+  mistakesEl.style.display = settings.showMistakes ? "" : "none";
+  timerEl.style.display = settings.showTimer ? "" : "none";
+  bestEl.style.display = settings.showBest ? "" : "none";
 
   document.querySelectorAll(".diff").forEach((d) =>
     d.classList.toggle("active", d.dataset.diff === game.difficulty)
   );
   const nb = document.getElementById("btn-notes");
-  nb.textContent = `✏ Qayd: ${game.notesMode ? "yoq" : "o'chiq"}`;
   nb.setAttribute("aria-pressed", String(game.notesMode));
+  nb.setAttribute("aria-label", game.notesMode ? "Qayd rejimi: yoqilgan" : "Qayd rejimi: o'chirilgan");
+  nb.setAttribute("title", game.notesMode ? "Qayd: yoqilgan" : "Qayd: o'chirilgan");
+  nb.classList.toggle("is-active", game.notesMode);
 
   if (game.status === "won") {
-    showOverlay("TABRIKLAYMIZ! 🎉", `${diffName(game.difficulty)} · ${fmtTime(game.seconds)}<br />Yana o'ynaysizmi?`, "Yangi o'yin");
+    showOverlay("TABRIKLAYMIZ!", `${diffName(game.difficulty)} · ${fmtTime(game.seconds)}<br />Yana o'ynaysizmi?`, "Yangi o'yin");
   } else if (game.status === "lost") {
-    showOverlay("O'YIN TUGADI", `3 ta xato — yechim ko'rsatildi.<br />Yangi o'yin bosing`, "Yangi o'yin");
+    showOverlay("O'YIN TUGADI", `${MAX_MISTAKES} ta xato — yechim ko'rsatildi.<br />Yangi o'yin bosing`, "Yangi o'yin");
     // reveal solution dimly on loss
     for (let i = 0; i < 81; i++) {
       if (!game.locked[i] && game.current[i] !== game.solution[i]) {
@@ -147,7 +103,7 @@ function render(flashIdx = -1) {
 function doPlace(v) {
   if (game.status !== "playing") return;
   if (game.selected < 0) autoSelect();
-  const r = place(game, game.selected, v);
+  const r = place(game, game.selected, v, { autoCleanNotes: settings.autoCleanNotes });
   if (r.mistake) buzz(80);
   else if (r.won) buzz([30, 50, 80]);
   else if (r.ok) buzz(10);
@@ -163,7 +119,7 @@ function doErase() {
 
 function doHint() {
   if (game.status !== "playing") return;
-  const t = hint(game, game.selected);
+  const t = hint(game, game.selected, { autoCleanNotes: settings.autoCleanNotes });
   if (t >= 0) {
     game.selected = t;
     buzz(20);
@@ -181,6 +137,33 @@ function newGame(difficulty) {
     hideOverlay();
     render();
   }, 30);
+}
+
+function onSettingsChange(patch) {
+  settings = { ...settings, ...patch };
+  saveSettings(settings);
+  applyTheme(settings);
+  syncSettingsModal(settings);
+  render();
+}
+
+// ---- upgrade legacy static buttons to .btn system (idempotent) ----
+function upgradeStaticButtons() {
+  document.querySelectorAll(".diff").forEach((d) => {
+    d.classList.add("btn", "btn--sm");
+  });
+  document.querySelectorAll(".toolbar button, .numpad button, .overlay button").forEach((b) => {
+    if (!b.classList.contains("btn")) applyButtonStyles(b);
+  });
+  const install = document.getElementById("btn-install");
+  if (install) install.classList.add("btn", "btn--sm", "btn--primary");
+  const settingsBtn = document.getElementById("btn-settings");
+  if (settingsBtn && !settingsBtn.classList.contains("icon-btn")) {
+    settingsBtn.classList.add("icon-btn");
+  }
+  if (overlayBtn && !overlayBtn.classList.contains("btn--primary")) {
+    overlayBtn.classList.add("btn", "btn--primary", "btn--lg");
+  }
 }
 
 // ---- events ----
@@ -215,6 +198,10 @@ overlayBtn.addEventListener("click", () => {
 document.querySelectorAll(".diff").forEach((d) =>
   d.addEventListener("click", () => newGame(d.dataset.diff))
 );
+
+document.getElementById("btn-settings")?.addEventListener("click", () => {
+  showSettingsModal(settings);
+});
 
 window.addEventListener("keydown", (e) => {
   if (e.key >= "1" && e.key <= "9") doPlace(Number(e.key));
@@ -251,14 +238,19 @@ document.addEventListener("visibilitychange", () => {
 setInterval(() => {
   if (game.status === "playing") {
     game.seconds += 1;
-    timerEl.textContent = `⏱ ${fmtTime(game.seconds)}`;
+    if (timerVal) timerVal.textContent = fmtTime(game.seconds);
     if (game.seconds % 10 === 0) save(game);
   }
 }, 1000);
 
 // ---- init ----
-buildBoard();
-buildNumpad();
+cells = buildBoard(boardEl, (i) => {
+  game.selected = i;
+  render();
+});
+buildNumpad(numpadEl, doPlace);
+buildSettingsModal({ onChange: onSettingsChange });
+upgradeStaticButtons();
 autoSelect();
 save(game);
 render();

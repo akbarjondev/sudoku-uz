@@ -2,7 +2,7 @@ import { generate, peersOf } from "./sudoku.js";
 
 const SAVE_KEY = "sudoku-save-v1";
 const BEST_KEY = "sudoku-best-v1";
-export const MAX_MISTAKES = 3;
+export const MAX_MISTAKES = 10;
 export const MAX_HINTS = 3;
 
 export function emptyNotes() {
@@ -47,6 +47,11 @@ export function load() {
     if (!raw) return null;
     const g = JSON.parse(raw);
     g.notes = g.notes.map((a) => new Set(a));
+    // Migrate old 3-mistake saves: clamp into new 10-limit range
+    if (typeof g.mistakes === "number") {
+      g.mistakes = Math.max(0, Math.min(g.mistakes, MAX_MISTAKES));
+      if (g.status === "lost" && g.mistakes < MAX_MISTAKES) g.status = "playing";
+    }
     return g;
   } catch {
     return null;
@@ -80,14 +85,16 @@ export function setBest(diff, seconds) {
   }
 }
 
-// Remove a placed number from peers' notes (auto-clean)
-function cleanPeerNotes(game, idx, val) {
+// Remove a placed number from peers' notes (auto-clean, toggleable via opts)
+function cleanPeerNotes(game, idx, val, enabled = true) {
+  if (!enabled) return;
   for (const p of peersOf(idx)) {
     if (game.notes[p].has(val)) game.notes[p].delete(val);
   }
 }
 
-export function place(game, idx, val) {
+export function place(game, idx, val, opts = {}) {
+  const autoClean = opts.autoCleanNotes !== false;
   if (game.status !== "playing" || idx < 0 || game.locked[idx]) return { ok: false };
   if (game.notesMode) {
     if (game.current[idx] !== 0) return { ok: false };
@@ -107,7 +114,7 @@ export function place(game, idx, val) {
     save(game);
     return { ok: true, mistake: true, lost: game.status === "lost" };
   }
-  cleanPeerNotes(game, idx, val);
+  cleanPeerNotes(game, idx, val, autoClean);
   if (isWon(game)) {
     game.status = "won";
     setBest(game.difficulty, game.seconds);
@@ -126,7 +133,8 @@ export function erase(game, idx) {
   return true;
 }
 
-export function hint(game, idx = -1) {
+export function hint(game, idx = -1, opts = {}) {
+  const autoClean = opts.autoCleanNotes !== false;
   if (game.status !== "playing" || game.hints <= 0) return -1;
   let target = idx;
   if (target < 0 || game.locked[target] || game.current[target] === game.solution[target]) {
@@ -137,7 +145,7 @@ export function hint(game, idx = -1) {
   game.current[target] = game.solution[target];
   game.locked[target] = true; // hinted cells lock like givens
   game.notes[target].clear();
-  cleanPeerNotes(game, target, game.current[target]);
+  cleanPeerNotes(game, target, game.current[target], autoClean);
   if (isWon(game)) {
     game.status = "won";
     setBest(game.difficulty, game.seconds);

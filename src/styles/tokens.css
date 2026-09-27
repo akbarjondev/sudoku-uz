@@ -1,0 +1,157 @@
+/* Design tokens — colors, spacing, sizes. Dark is default (legacy values preserved). */
+:root {
+  /* colors — dark default */
+  --color-bg: #0a0e14;
+  --color-surface: #161b22;
+  --color-board: #0d1117;
+  --color-text: #e6edf3;
+  --color-muted: #8b949e;
+  --color-notes: #9aa4b2;
+  --color-border: #30363d;
+  --color-cell-border: #21262d;
+  --color-border-strong: #8b949e;
+  --color-accent: #3fb950;
+  --color-accent-contrast: #0a0e14;
+  --color-select: #1f6feb;
+  --color-select-soft: #1f6feb55;
+  --color-same: #1f6feb33;
+  --color-related: #161b22;
+  --color-danger: #f85149;
+  --color-danger-soft: #f8514922;
+  --color-warning: #d29922;
+  --color-warning-soft: #d2992255;
+  --color-overlay: rgba(10, 14, 20, 0.96);
+  --color-sticky: rgba(13, 17, 23, 0.94);
+
+  /* spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+
+  /* radius */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-sheet: 16px;
+
+  /* font sizes */
+  --font-xs: 11px;
+  --font-sm: 12px;
+  --font-md: 13px;
+  --font-lg: 20px;
+  --font-xl: 22px;
+  --font-cell: clamp(18px, 5vw, 24px);
+  --font-numpad: 24px;
+  --font-numpad-lg: 26px;
+  --font-notes: 10px;
+
+  /* sizes */
+  --board-max: 420px;
+  --board-max-lg: 480px;
+  --board-width: min(92vw, 420px);
+  --btn-min-h: 44px;
+  --btn-min-h-lg: 48px;
+  --numpad-min-h: 60px;
+  --numpad-min-h-lg: 64px;
+  --wrap-max-lg: 560px;
+
+  /* icons — Lucide 24px grid, uniform sizes */
+  --icon-size-sm: 16px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 24px;
+  --icon-stroke: 2;
+
+  --meta-theme: #0a0e14;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --color-bg: #f6f8fa;
+  --color-surface: #ffffff;
+  --color-board: #ffffff;
+  --color-text: #1f2328;
+  --color-muted: #57606a;
+  --color-notes: #6e7781;
+  --color-border: #d0d7de;
+  --color-cell-border: #e5e8eb;
+  --color-border-strong: #8c959f;
+  --color-accent: #1a7f37;
+  --color-accent-contrast: #ffffff;
+  --color-select: #0969da;
+  --color-select-soft: #0969da2e;
+  --color-same: #0969da1f;
+  --color-related: #eaeef2;
+  --color-danger: #cf222e;
+  --color-danger-soft: #cf222e1a;
+  --color-warning: #9a6700;
+  --color-warning-soft: #d2992244;
+  --color-overlay: rgba(255, 255, 255, 0.97);
+  --color-sticky: rgba(255, 255, 255, 0.94);
+
+  --meta-theme: #f6f8fa;
+}
+
+/* Explicit dark (same as :root, for switcher persistence) */
+[data-theme="dark"] {
+  --color-bg: #0a0e14;
+  --color-surface: #161b22;
+  --color-board: #0d1117;
+  --color-text: #e6edf3;
+  --color-muted: #8b949e;
+  --color-notes: #9aa4b2;
+  --color-border: #30363d;
+  --color-cell-border: #21262d;
+  --color-border-strong: #8b949e;
+  --color-accent: #3fb950;
+  --color-accent-contrast: #0a0e14;
+  --color-select: #1f6feb;
+  --color-select-soft: #1f6feb55;
+  --color-same: #1f6feb33;
+  --color-related: #161b22;
+  --color-danger: #f85149;
+  --color-danger-soft: #f8514922;
+  --color-warning: #d29922;
+  --color-warning-soft: #d2992255;
+  --color-overlay: rgba(10, 14, 20, 0.96);
+  --color-sticky: rgba(13, 17, 23, 0.94);
+
+  --meta-theme: #0a0e14;
+}
+
+/* System: no override here — JS resolves to light/dark at runtime.
+   But respect OS preference before JS loads / if JS set to system with
+   pure CSS fallback via media query on :root when data-theme="system". */
+[data-theme="system"] {
+  /* defaults to dark; media query below overrides to light */
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-theme="light"]) ,
+  [data-theme="system"] {
+    --color-bg: #f6f8fa;
+    --color-surface: #ffffff;
+    --color-board: #ffffff;
+    --color-text: #1f2328;
+    --color-muted: #57606a;
+    --color-notes: #6e7781;
+    --color-border: #d0d7de;
+    --color-cell-border: #e5e8eb;
+    --color-border-strong: #8c959f;
+    --color-accent: #1a7f37;
+    --color-accent-contrast: #ffffff;
+    --color-select: #0969da;
+    --color-select-soft: #0969da2e;
+    --color-same: #0969da1f;
+    --color-related: #eaeef2;
+    --color-danger: #cf222e;
+    --color-danger-soft: #cf222e1a;
+    --color-warning: #9a6700;
+    --color-warning-soft: #d2992244;
+    --color-overlay: rgba(255, 255, 255, 0.97);
+    --color-sticky: rgba(255, 255, 255, 0.94);
+    --meta-theme: #f6f8fa;
+  }
+}
