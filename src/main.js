@@ -5,6 +5,7 @@ import { buildBoard, buildNumpad, paintCells } from "./ui/board.js";
 import { applyButtonStyles } from "./ui/components.js";
 import { loadSettings, saveSettings, applyTheme, watchSystemTheme } from "./settings.js";
 import { buildSettingsModal, syncSettingsModal, showSettingsModal } from "./ui/settings-modal.js";
+import { buildRecordsModal, showRecordsModal } from "./ui/records-modal.js";
 
 const boardEl = document.getElementById("board");
 const numpadEl = document.getElementById("numpad");
@@ -203,6 +204,23 @@ document.getElementById("btn-settings")?.addEventListener("click", () => {
   showSettingsModal(settings);
 });
 
+function openRecords() {
+  showRecordsModal(game.difficulty);
+}
+bestEl?.addEventListener("click", openRecords);
+if (bestEl) {
+  bestEl.setAttribute("role", "button");
+  bestEl.setAttribute("tabindex", "0");
+  bestEl.setAttribute("title", "Rekordlar tarixi");
+  bestEl.setAttribute("aria-label", "Rekordlar tarixi");
+  bestEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openRecords();
+    }
+  });
+}
+
 window.addEventListener("keydown", (e) => {
   if (e.key >= "1" && e.key <= "9") doPlace(Number(e.key));
   else if (e.key === "Backspace" || e.key === "0" || e.key === "Delete") doErase();
@@ -250,6 +268,7 @@ cells = buildBoard(boardEl, (i) => {
 });
 buildNumpad(numpadEl, doPlace);
 buildSettingsModal({ onChange: onSettingsChange });
+buildRecordsModal();
 upgradeStaticButtons();
 autoSelect();
 save(game);

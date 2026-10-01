@@ -2,6 +2,8 @@ import { generate, peersOf } from "./sudoku.js";
 
 const SAVE_KEY = "sudoku-save-v1";
 const BEST_KEY = "sudoku-best-v1";
+const HISTORY_KEY = "sudoku-history-v1";
+export const HISTORY_LIMIT_PER_DIFF = 50;
 export const MAX_MISTAKES = 10;
 export const MAX_HINTS = 3;
 
@@ -85,6 +87,73 @@ export function setBest(diff, seconds) {
   }
 }
 
+export function getHistory() {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  } catch {
+    return [];
+  }
+}
+
+function persistHistory(arr) {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
+  } catch { /* ignore */ }
+}
+
+export function addHistoryEntry({ diff, seconds, mistakes = 0, hintsLeft = 0 }) {
+  try {
+    const entry = {
+      id: `${Date.now()}-${Math.floor(Math.random() * 1e6)}`,
+      diff,
+      seconds,
+      mistakes,
+      hintsLeft,
+      date: Date.now(),
+    };
+    let arr = getHistory();
+    arr.push(entry);
+    // cap per difficulty to avoid unbounded growth
+    const counts = {};
+    // keep newest beyond limit trimmed per diff (drop slowest old entries)
+    for (const d of ["easy", "medium", "hard"]) {
+      const items = arr.filter((e) => e.diff === d);
+      counts[d] = items.length;
+      if (items.length > HISTORY_LIMIT_PER_DIFF) {
+        // sort by seconds desc (slowest first) and drop excess slowest? keep fastest + newest
+        // simplest: keep fastest N
+        items.sort((a, b) => a.seconds - b.seconds);
+        const keep = new Set(items.slice(0, HISTORY_LIMIT_PER_DIFF).map((e) => e.id));
+        arr = arr.filter((e) => e.diff !== d || keep.has(e.id));
+      }
+    }
+    void counts;
+    persistHistory(arr);
+    // seed/keep legacy best in sync
+    setBest(diff, seconds);
+    return entry;
+  } catch {
+    return null;
+  }
+}
+
+export function clearHistory(diff = null) {
+  try {
+    if (!diff) {
+      localStorage.removeItem(HISTORY_KEY);
+      return [];
+    }
+    const rest = getHistory().filter((e) => e.diff !== diff);
+    persistHistory(rest);
+    return rest;
+  } catch {
+    return [];
+  }
+}
+
 // Remove a placed number from peers' notes (auto-clean, toggleable via opts)
 function cleanPeerNotes(game, idx, val, enabled = true) {
   if (!enabled) return;
@@ -118,6 +187,12 @@ export function place(game, idx, val, opts = {}) {
   if (isWon(game)) {
     game.status = "won";
     setBest(game.difficulty, game.seconds);
+    addHistoryEntry({
+      diff: game.difficulty,
+      seconds: game.seconds,
+      mistakes: game.mistakes,
+      hintsLeft: game.hints,
+    });
     clearSave();
   } else {
     save(game);
@@ -149,6 +224,12 @@ export function hint(game, idx = -1, opts = {}) {
   if (isWon(game)) {
     game.status = "won";
     setBest(game.difficulty, game.seconds);
+    addHistoryEntry({
+      diff: game.difficulty,
+      seconds: game.seconds,
+      mistakes: game.mistakes,
+      hintsLeft: game.hints,
+    });
     clearSave();
   } else {
     save(game);

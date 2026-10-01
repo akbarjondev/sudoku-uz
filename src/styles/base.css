@@ -17,6 +17,8 @@ body {
 .wrap {
   width: 100%;
   max-width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   padding: calc(var(--space-3) + env(safe-area-inset-top)) var(--space-3) calc(var(--space-3) + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
@@ -46,12 +48,6 @@ body {
   margin: 0 2px;
 }
 .board-holder { position: relative; }
-.hint {
-  font-size: var(--font-xs);
-  opacity: 0.5;
-  text-align: center;
-  margin: 0;
-}
 .hidden { display: none !important; }
 
 button:focus-visible, .cell:focus-visible {

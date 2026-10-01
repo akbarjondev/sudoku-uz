@@ -4,7 +4,6 @@
   .topbar h1 { font-size: var(--font-xl); }
   .numpad { gap: 10px; }
   .numpad button { min-height: var(--numpad-min-h-lg); font-size: var(--font-numpad-lg); }
-  .hint { font-size: var(--font-sm); }
 }
 @media (min-width: 768px) {
   .wrap { max-width: var(--wrap-max-lg); }

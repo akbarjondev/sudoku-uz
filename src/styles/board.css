@@ -50,18 +50,18 @@
   pointer-events: none;
 }
 
-/* Sticky bottom zone */
+/* Sticky bottom zone — same bg as page, buttons keep surface bg */
 .sticky-bar {
   position: sticky;
   bottom: 0;
-  background: var(--color-sticky);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 10px 4px calc(10px + env(safe-area-inset-bottom));
-  margin: 0 -12px calc(-12px - env(safe-area-inset-bottom));
+  flex: 1;
+  justify-content: flex-end;
+  background: var(--color-bg);
+  padding: 10px 4px 0;
+  margin: auto -12px calc(-12px - env(safe-area-inset-bottom));
   padding-left: 12px;
   padding-right: 12px;
-  border-top: 1px solid var(--color-cell-border);
+  padding-bottom: calc(env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
