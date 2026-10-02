@@ -2,6 +2,7 @@
 .board {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
   background: var(--color-board);
   border: var(--border-w-strong) solid var(--color-border-strong);
   border-radius: var(--radius-md);
@@ -12,6 +13,11 @@
   margin: 0 auto;
 }
 .cell {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  margin: 0;
+  font: inherit;
   background: transparent;
   color: var(--color-text);
   border: 0;
