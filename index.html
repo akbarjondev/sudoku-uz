@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a0e14" />
+  <meta name="theme-color" content="#56633f" />
   <meta name="description" content="O'zbek tilida Sudoku — oson, o'rta, qiyin darajalar. Telefonda o'rnatib offline o'ynang." />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -12,21 +12,18 @@
   <meta property="og:title" content="Sudoku — O'zbekcha" />
   <meta property="og:description" content="O'zbek tilida Sudoku. Oson, o'rta, qiyin. Offline PWA." />
   <meta property="og:type" content="website" />
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-  <link rel="apple-touch-icon" href="./icons/apple-180.png" />
+  <link rel="icon" href="./icons/favicon.ico" sizes="16x16 32x32 48x48" />
+  <link rel="icon" type="image/svg+xml" href="./icons/favicon.svg" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
   <title>Sudoku — O'zbekcha</title>
   <script>
-    // Anti-FOUC: apply saved theme before CSS loads
+    // Anti-FOUC: apply saved theme before CSS loads. Brand chrome stays Garden sage.
     try {
       var s = JSON.parse(localStorage.getItem("sudoku-settings-v1") || "{}");
       var t = s.theme || "system";
       document.documentElement.dataset.theme = t;
-      var resolved = t;
-      if (t === "system") {
-        resolved = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-      }
       var meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute("content", resolved === "light" ? "#f6f8fa" : "#0a0e14");
+      if (meta) meta.setAttribute("content", "#56633f");
     } catch (e) { /* ignore */ }
   </script>
 </head>

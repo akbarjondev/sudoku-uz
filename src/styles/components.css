@@ -3,7 +3,7 @@
 .btn {
   background: var(--color-surface);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: var(--border-w) solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-2) var(--space-3);
   cursor: pointer;
@@ -12,11 +12,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--space-1-5);
   white-space: nowrap;
 }
 
-.btn--sm { padding: var(--space-2) 10px; font-size: var(--font-md); }
+.btn--sm { padding: var(--space-2) var(--space-2-5); font-size: var(--font-md); }
 .btn--md { font-size: var(--font-md); }
 .btn--lg { min-height: var(--btn-min-h-lg); padding: var(--space-3) var(--space-6); }
 
@@ -39,27 +39,27 @@
 .diff, .toolbar button, .numpad button, .overlay button {
   background: var(--color-surface);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: var(--border-w) solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-2) var(--space-3);
   cursor: pointer;
   font: inherit;
   min-height: var(--btn-min-h);
 }
-.diff { padding: var(--space-2) 10px; font-size: var(--font-md); }
+.diff { padding: var(--space-2) var(--space-2-5); font-size: var(--font-md); }
 .diff.active { border-color: var(--color-accent); color: var(--color-accent); }
 
 .icon-btn {
   background: var(--color-surface);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: var(--border-w) solid var(--color-border);
   border-radius: var(--radius-md);
   min-height: var(--btn-min-h);
   min-width: var(--btn-min-h);
   padding: var(--space-2);
   cursor: pointer;
   font: inherit;
-  font-size: 16px;
+  font-size: var(--font-icon);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -87,11 +87,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--space-1-5);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-w) solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 7px 4px;
+  padding: var(--space-2) var(--space-1);
   font-size: var(--font-sm);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -104,10 +104,10 @@
 
 .sr-only {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  width: var(--border-w);
+  height: var(--border-w);
   padding: 0;
-  margin: -1px;
+  margin: calc(var(--border-w) * -1);
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -128,14 +128,14 @@
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: calc(16px + env(safe-area-inset-bottom));
+  bottom: calc(var(--toast-offset) + env(safe-area-inset-bottom));
   display: flex;
-  gap: 10px;
+  gap: var(--space-2-5);
   align-items: center;
   background: var(--color-surface);
-  border: 1px solid var(--color-accent);
+  border: var(--border-w) solid var(--color-accent);
   border-radius: var(--radius-lg);
-  padding: 10px var(--space-3);
+  padding: var(--space-2-5) var(--space-3);
   font-size: var(--font-md);
   z-index: 50;
 }
@@ -144,27 +144,27 @@
   color: var(--color-accent-contrast);
   border: 0;
   border-radius: var(--radius-sm);
-  padding: var(--space-2) 14px;
+  padding: var(--space-2) var(--space-3-5);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  min-height: 40px;
+  min-height: var(--btn-min-danger);
 }
 .ios-tip {
   display: flex;
-  gap: 10px;
+  gap: var(--space-2-5);
   align-items: center;
   justify-content: space-between;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: var(--border-w) solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 10px var(--space-3);
+  padding: var(--space-2-5) var(--space-3);
   font-size: var(--font-sm);
 }
 .ios-tip button {
   background: transparent;
   border: 0;
   color: var(--color-text);
-  font-size: 16px;
+  font-size: var(--font-icon);
   cursor: pointer;
 }

@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: "prompt",
-      includeAssets: ["favicon.svg", "robots.txt", "icons/*.png"],
+      includeAssets: ["favicon.svg", "robots.txt", "icons/*.png", "icons/*.svg", "icons/*.ico"],
       manifest: {
         name: "Sudoku — O'zbekcha",
         short_name: "Sudoku",
@@ -19,17 +19,14 @@ export default defineConfig({
         scope: ".",
         display: "standalone",
         orientation: "portrait",
-        theme_color: "#0a0e14",
-        background_color: "#0a0e14",
+        theme_color: "#56633f",
+        background_color: "#f5ead8",
         icons: [
-          { src: "icons/icon-192.png", sizes: "192x192", type: "image/png" },
-          { src: "icons/icon-512.png", sizes: "512x512", type: "image/png" },
-          {
-            src: "icons/maskable-512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "maskable",
-          },
+          { src: "icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+          { src: "icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+          { src: "icons/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
+          { src: "icons/icon-maskable-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
+          { src: "icons/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
         ],
       },
       workbox: {

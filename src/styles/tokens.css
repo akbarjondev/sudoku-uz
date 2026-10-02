@@ -1,32 +1,46 @@
-/* Design tokens — colors, spacing, sizes. Dark is default (legacy values preserved). */
+/* Design tokens — Garden DS (pinned). Light = kit exact; dark = warm tonal counterpart.
+   Kit: ground #56633f, outer tile #ccdbb2, centre #f5ead8, ink #201e1d.
+   Components must use vars only — no raw hex/rgba/px outside this file. */
 :root {
-  /* colors — dark default */
-  --color-bg: #0a0e14;
-  --color-surface: #161b22;
-  --color-board: #0d1117;
-  --color-text: #e6edf3;
-  --color-muted: #8b949e;
-  --color-notes: #9aa4b2;
-  --color-border: #30363d;
-  --color-cell-border: #21262d;
-  --color-border-strong: #8b949e;
-  --color-accent: #3fb950;
-  --color-accent-contrast: #0a0e14;
-  --color-select: #1f6feb;
-  --color-select-soft: #1f6feb55;
-  --color-same: #1f6feb33;
-  --color-related: #161b22;
-  --color-danger: #f85149;
-  --color-danger-soft: #f8514922;
-  --color-warning: #d29922;
-  --color-warning-soft: #d2992255;
-  --color-overlay: rgba(10, 14, 20, 0.96);
-  --color-sticky: rgba(13, 17, 23, 0.94);
+  /* brand source (pinned, theme-independent) */
+  --brand-ground: #56633f;
+  --brand-ground-deep: #3d472b;
+  --brand-tile: #ccdbb2;
+  --brand-center: #f5ead8;
+  --brand-ink: #201e1d;
 
-  /* spacing scale */
+  /* colors — dark default (warm ink counterpart) */
+  --color-bg: #201e1d;
+  --color-surface: #2e2b29;
+  --color-board: #262422;
+  --color-text: #f5ead8;
+  --color-muted: #b8ad9c;
+  --color-notes: #a89d8b;
+  --color-border: #4a453d;
+  --color-cell-border: #383431;
+  --color-border-strong: #ccdbb2;
+  --color-accent: #ccdbb2;
+  --color-accent-contrast: #201e1d;
+  --color-select: #ccdbb2;
+  --color-select-soft: #ccdbb255;
+  --color-same: #ccdbb233;
+  --color-related: #2e2b29;
+  --color-danger: #ffb4ab;
+  --color-danger-soft: #ffb4ab22;
+  --color-warning: #e8c468;
+  --color-warning-soft: #e8c46855;
+  --color-overlay: rgba(32, 30, 29, 0.96);
+  --color-scrim: rgba(0, 0, 0, 0.55);
+  --color-sticky: rgba(32, 30, 29, 0.94);
+
+  /* spacing scale (pinned) */
+  --space-0-5: 2px;
   --space-1: 4px;
+  --space-1-5: 6px;
   --space-2: 8px;
+  --space-2-5: 10px;
   --space-3: 12px;
+  --space-3-5: 14px;
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
@@ -36,6 +50,13 @@
   --radius-md: 10px;
   --radius-lg: 12px;
   --radius-sheet: 16px;
+  --radius-pill: 999px;
+
+  /* hairlines + tracking (pinned) */
+  --border-w: 1px;
+  --border-w-strong: 2px;
+  --tracking-sm: 0.5px;
+  --tracking-md: 1px;
 
   /* font sizes */
   --font-xs: 11px;
@@ -47,6 +68,7 @@
   --font-numpad: 24px;
   --font-numpad-lg: 26px;
   --font-notes: 10px;
+  --font-icon: 16px;
 
   /* sizes */
   --board-max: 420px;
@@ -54,9 +76,21 @@
   --board-width: min(92vw, 420px);
   --btn-min-h: 44px;
   --btn-min-h-lg: 48px;
+  --btn-min-danger: 40px;
   --numpad-min-h: 60px;
   --numpad-min-h-lg: 64px;
   --wrap-max-lg: 560px;
+  --sheet-max-w: 560px;
+  --sheet-max-h: min(88dvh, 640px);
+  --sheet-max-h-lg: 640px;
+  --records-min-h: 120px;
+  --records-max-h: 40dvh;
+  --records-rank-w: 32px;
+  --switch-w: 48px;
+  --switch-h: 28px;
+  --switch-knob: 22px;
+  --switch-travel: 20px;
+  --toast-offset: 16px;
 
   /* icons — Lucide 24px grid, uniform sizes */
   --icon-size-sm: 16px;
@@ -64,61 +98,63 @@
   --icon-size-lg: 24px;
   --icon-stroke: 2;
 
-  --meta-theme: #0a0e14;
+  --meta-theme: #56633f;
 }
 
-/* Light theme */
+/* Light theme — Garden kit exact */
 [data-theme="light"] {
-  --color-bg: #f6f8fa;
+  --color-bg: #f5ead8;
   --color-surface: #ffffff;
-  --color-board: #ffffff;
-  --color-text: #1f2328;
-  --color-muted: #57606a;
-  --color-notes: #6e7781;
-  --color-border: #d0d7de;
-  --color-cell-border: #e5e8eb;
-  --color-border-strong: #8c959f;
-  --color-accent: #1a7f37;
-  --color-accent-contrast: #ffffff;
-  --color-select: #0969da;
-  --color-select-soft: #0969da2e;
-  --color-same: #0969da1f;
-  --color-related: #eaeef2;
-  --color-danger: #cf222e;
-  --color-danger-soft: #cf222e1a;
-  --color-warning: #9a6700;
-  --color-warning-soft: #d2992244;
-  --color-overlay: rgba(255, 255, 255, 0.97);
-  --color-sticky: rgba(255, 255, 255, 0.94);
+  --color-board: #fffdf7;
+  --color-text: #201e1d;
+  --color-muted: #6b6156;
+  --color-notes: #7a7062;
+  --color-border: #d8cdb8;
+  --color-cell-border: #e8ddc8;
+  --color-border-strong: #56633f;
+  --color-accent: #56633f;
+  --color-accent-contrast: #f5ead8;
+  --color-select: #3d472b;
+  --color-select-soft: #56633f2e;
+  --color-same: #56633f1f;
+  --color-related: #ece1cb;
+  --color-danger: #b3261e;
+  --color-danger-soft: #b3261e1a;
+  --color-warning: #7a5c00;
+  --color-warning-soft: #7a5c0044;
+  --color-overlay: rgba(245, 234, 216, 0.97);
+  --color-scrim: rgba(32, 30, 29, 0.55);
+  --color-sticky: rgba(245, 234, 216, 0.94);
 
-  --meta-theme: #f6f8fa;
+  --meta-theme: #56633f;
 }
 
 /* Explicit dark (same as :root, for switcher persistence) */
 [data-theme="dark"] {
-  --color-bg: #0a0e14;
-  --color-surface: #161b22;
-  --color-board: #0d1117;
-  --color-text: #e6edf3;
-  --color-muted: #8b949e;
-  --color-notes: #9aa4b2;
-  --color-border: #30363d;
-  --color-cell-border: #21262d;
-  --color-border-strong: #8b949e;
-  --color-accent: #3fb950;
-  --color-accent-contrast: #0a0e14;
-  --color-select: #1f6feb;
-  --color-select-soft: #1f6feb55;
-  --color-same: #1f6feb33;
-  --color-related: #161b22;
-  --color-danger: #f85149;
-  --color-danger-soft: #f8514922;
-  --color-warning: #d29922;
-  --color-warning-soft: #d2992255;
-  --color-overlay: rgba(10, 14, 20, 0.96);
-  --color-sticky: rgba(13, 17, 23, 0.94);
+  --color-bg: #201e1d;
+  --color-surface: #2e2b29;
+  --color-board: #262422;
+  --color-text: #f5ead8;
+  --color-muted: #b8ad9c;
+  --color-notes: #a89d8b;
+  --color-border: #4a453d;
+  --color-cell-border: #383431;
+  --color-border-strong: #ccdbb2;
+  --color-accent: #ccdbb2;
+  --color-accent-contrast: #201e1d;
+  --color-select: #ccdbb2;
+  --color-select-soft: #ccdbb255;
+  --color-same: #ccdbb233;
+  --color-related: #2e2b29;
+  --color-danger: #ffb4ab;
+  --color-danger-soft: #ffb4ab22;
+  --color-warning: #e8c468;
+  --color-warning-soft: #e8c46855;
+  --color-overlay: rgba(32, 30, 29, 0.96);
+  --color-scrim: rgba(0, 0, 0, 0.55);
+  --color-sticky: rgba(32, 30, 29, 0.94);
 
-  --meta-theme: #0a0e14;
+  --meta-theme: #56633f;
 }
 
 /* System: no override here — JS resolves to light/dark at runtime.
@@ -131,27 +167,28 @@
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]):not([data-theme="light"]) ,
   [data-theme="system"] {
-    --color-bg: #f6f8fa;
+    --color-bg: #f5ead8;
     --color-surface: #ffffff;
-    --color-board: #ffffff;
-    --color-text: #1f2328;
-    --color-muted: #57606a;
-    --color-notes: #6e7781;
-    --color-border: #d0d7de;
-    --color-cell-border: #e5e8eb;
-    --color-border-strong: #8c959f;
-    --color-accent: #1a7f37;
-    --color-accent-contrast: #ffffff;
-    --color-select: #0969da;
-    --color-select-soft: #0969da2e;
-    --color-same: #0969da1f;
-    --color-related: #eaeef2;
-    --color-danger: #cf222e;
-    --color-danger-soft: #cf222e1a;
-    --color-warning: #9a6700;
-    --color-warning-soft: #d2992244;
-    --color-overlay: rgba(255, 255, 255, 0.97);
-    --color-sticky: rgba(255, 255, 255, 0.94);
-    --meta-theme: #f6f8fa;
+    --color-board: #fffdf7;
+    --color-text: #201e1d;
+    --color-muted: #6b6156;
+    --color-notes: #7a7062;
+    --color-border: #d8cdb8;
+    --color-cell-border: #e8ddc8;
+    --color-border-strong: #56633f;
+    --color-accent: #56633f;
+    --color-accent-contrast: #f5ead8;
+    --color-select: #3d472b;
+    --color-select-soft: #56633f2e;
+    --color-same: #56633f1f;
+    --color-related: #ece1cb;
+    --color-danger: #b3261e;
+    --color-danger-soft: #b3261e1a;
+    --color-warning: #7a5c00;
+    --color-warning-soft: #7a5c0044;
+    --color-overlay: rgba(245, 234, 216, 0.97);
+    --color-scrim: rgba(32, 30, 29, 0.55);
+    --color-sticky: rgba(245, 234, 216, 0.94);
+    --meta-theme: #56633f;
   }
 }

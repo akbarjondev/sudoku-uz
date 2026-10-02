@@ -2,7 +2,7 @@
 @media (min-width: 480px) {
   .wrap { padding: calc(var(--space-4) + env(safe-area-inset-top)) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom)); }
   .topbar h1 { font-size: var(--font-xl); }
-  .numpad { gap: 10px; }
+  .numpad { gap: var(--space-2-5); }
   .numpad button { min-height: var(--numpad-min-h-lg); font-size: var(--font-numpad-lg); }
 }
 @media (min-width: 768px) {

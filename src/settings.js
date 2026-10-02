@@ -39,11 +39,10 @@ function resolveTheme(theme) {
 
 export function applyTheme(settings) {
   const theme = settings?.theme || "system";
-  // Keep data-theme for CSS; resolve system for meta color.
+  // Keep data-theme for CSS; brand chrome stays Garden sage per DS.
   document.documentElement.dataset.theme = theme;
-  const resolved = resolveTheme(theme);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute("content", resolved === "light" ? "#f6f8fa" : "#0a0e14");
+  if (meta) meta.setAttribute("content", "#56633f");
 }
 
 /* Follow OS changes when theme=system */
